@@ -2,11 +2,6 @@
 
 Cryptography learning workbench for encryption, attack demonstrations, frequency analysis, and live performance comparison.
 
-cd "/home/rakibul/Desktop/CSE721 Project"
-python3 backend/app.py
-
-This project follows the original `CSE721 Project requirements.pdf`.
-
 It is a simple frontend/backend project with no database. The frontend collects input and shows results. The Python backend performs the cryptographic algorithms.
 
 ## How to Run
