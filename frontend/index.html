@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CipherScope | Cryptography Workbench</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body onload="setupForms()">
+  <header class="topbar">
+    <div>
+      <h1>CipherScope</h1>
+      <p>Cryptography learning workbench for encryption, attacks, and performance analysis</p>
+    </div>
+    <nav>
+      <button onclick="showSection('classical')">Classical</button>
+      <button onclick="showSection('symmetric')">Symmetric</button>
+      <button onclick="showSection('publicKey')">Public-Key</button>
+      <button onclick="showSection('comparison')">Comparison</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="classical" class="page active">
+      <h2>Classical Cryptography</h2>
+
+      <div class="two-column">
+        <article class="panel">
+          <h3>Substitution Cipher</h3>
+
+          <label>Mode</label>
+          <select id="subMode" onchange="updateSubForm()">
+            <option value="encrypt">Plaintext to Ciphertext</option>
+            <option value="decrypt">Ciphertext to Plaintext</option>
+            <option value="frequency">Frequency Analysis</option>
+            <option value="frequencyAttack">Frequency Attack Guess</option>
+            <option value="bruteforce">Caesar Brute Force Attack</option>
+          </select>
+
+          <label id="subTextLabel">Plaintext</label>
+          <textarea id="subText">HELLO CRYPTOGRAPHY</textarea>
+
+          <label id="subKeyLabel">26-letter key</label>
+          <input id="subKey" value="QWERTYUIOPASDFGHJKLZXCVBNM">
+
+          <div class="button-row">
+            <button onclick="runSubstitution()">Run</button>
+          </div>
+
+          <pre id="subResult"></pre>
+        </article>
+
+        <article class="panel">
+          <h3>Double Transposition</h3>
+
+          <label>Mode</label>
+          <select id="doubleMode" onchange="updateDoubleForm()">
+            <option value="encrypt">Plaintext to Ciphertext</option>
+            <option value="decrypt">Ciphertext to Plaintext</option>
+            <option value="frequency">Frequency Analysis</option>
+            <option value="permutationAttack">Permutation Attack</option>
+          </select>
+
+          <label id="doubleTextLabel">Plaintext</label>
+          <textarea id="doubleText">HELLOCRYPTOGRAPHY</textarea>
+
+          <div id="doubleKeyBox">
+            <label id="doubleKey1Label">Row permutation key</label>
+            <input id="doubleKey1" value="3 1 2">
+
+            <label id="doubleKey2Label">Column permutation key</label>
+            <input id="doubleKey2" value="2 3 1">
+          </div>
+
+          <div class="button-row">
+            <button onclick="runDoubleTransposition()">Run</button>
+          </div>
+
+          <pre id="doubleResult"></pre>
+        </article>
+      </div>
+    </section>
+
+    <section id="symmetric" class="page">
+      <h2>Symmetric-Key Cryptography</h2>
+
+      <div class="two-column">
+        <article class="panel">
+          <h3>DES</h3>
+
+          <label>Mode</label>
+          <select id="desMode" onchange="updateDesForm()">
+            <option value="encrypt">Plaintext to Ciphertext</option>
+            <option value="decrypt">Ciphertext to Plaintext</option>
+          </select>
+
+          <label id="desTextLabel">Plaintext</label>
+          <textarea id="desText">HELLO DES</textarea>
+
+          <div id="desKeyBox" class="hidden">
+            <label>DES key hex</label>
+            <input id="desKeyHex">
+          </div>
+
+          <div class="button-row">
+            <button onclick="runDesMode()">Run DES</button>
+          </div>
+
+          <pre id="desResult"></pre>
+        </article>
+
+        <article class="panel">
+          <h3>AES</h3>
+
+          <label>Mode</label>
+          <select id="aesMode" onchange="updateAesForm()">
+            <option value="encrypt">Plaintext to Ciphertext</option>
+            <option value="decrypt">Ciphertext to Plaintext</option>
+          </select>
+
+          <label id="aesTextLabel">Plaintext</label>
+          <textarea id="aesText">HELLO AES</textarea>
+
+          <div id="aesKeyBox" class="hidden">
+            <label>AES-128 key hex</label>
+            <input id="aesKeyHex">
+          </div>
+
+          <div class="button-row">
+            <button onclick="runAesMode()">Run AES</button>
+          </div>
+
+          <pre id="aesResult"></pre>
+        </article>
+      </div>
+    </section>
+
+    <section id="publicKey" class="page">
+      <h2>Public-Key Cryptography</h2>
+
+      <div class="two-column">
+        <article class="panel">
+          <h3>RSA</h3>
+
+          <label>Mode</label>
+          <select id="rsaMode" onchange="updateRsaForm()">
+            <option value="generate">Generate Keys</option>
+            <option value="encrypt">Plaintext to Ciphertext</option>
+            <option value="decrypt">Ciphertext to Plaintext</option>
+            <option value="attack">Factorization Attack</option>
+          </select>
+
+          <div id="rsaKeySizeBox">
+            <label>Key size</label>
+            <input id="rsaKeySize" value="512">
+          </div>
+
+          <div id="rsaMessageBox">
+            <label id="rsaMessageLabel">Plaintext</label>
+            <textarea id="rsaMessage">HELLO RSA</textarea>
+          </div>
+
+          <div id="rsaEBox">
+            <label>Public exponent e</label>
+            <input id="rsaE">
+          </div>
+
+          <div id="rsaNBox">
+            <label>Modulus n</label>
+            <textarea id="rsaN"></textarea>
+          </div>
+
+          <div id="rsaDBox">
+            <label>Private exponent d</label>
+            <textarea id="rsaD"></textarea>
+          </div>
+
+          <div class="button-row">
+            <button onclick="runRsaMode()">Run RSA</button>
+          </div>
+
+          <pre id="rsaResult"></pre>
+        </article>
+
+        <article class="panel">
+          <h3>ECC and ECDH</h3>
+
+          <label>Mode</label>
+          <select id="eccMode" onchange="updateEccForm()">
+            <option value="points">List Valid Points</option>
+            <option value="key">Generate Public Key</option>
+            <option value="ecdh">Run ECDH Shared Key</option>
+          </select>
+
+          <div class="small-grid">
+            <label>p <input id="eccP" value="17"></label>
+            <label>a <input id="eccA" value="2"></label>
+            <label>b <input id="eccB" value="2"></label>
+            <label>Gx <input id="eccGx" value="5"></label>
+            <label>Gy <input id="eccGy" value="1"></label>
+            <label>n <input id="eccN" value="19"></label>
+          </div>
+
+          <div id="eccPrivateBox">
+            <label>Private key</label>
+            <input id="eccPrivate" value="5">
+          </div>
+
+          <div id="eccEcdhBox">
+            <label>Alice private key</label>
+            <input id="alicePrivate" value="5">
+
+            <label>Bob private key</label>
+            <input id="bobPrivate" value="7">
+          </div>
+
+          <div class="button-row">
+            <button onclick="runEccMode()">Run ECC</button>
+          </div>
+
+          <pre id="eccResult"></pre>
+        </article>
+      </div>
+    </section>
+
+    <section id="comparison" class="page">
+      <h2>Security and Performance Comparison</h2>
+      <div class="panel">
+        <div class="button-row">
+          <button onclick="loadComparison()">Load Security Table</button>
+          <button onclick="loadPerformanceComparison()">Run Technical Performance Table</button>
+        </div>
+        <div id="comparisonResult" class="table-holder"></div>
+        <div id="performanceResult" class="table-holder"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/script.js"></script>
+</body>
+</html>
